@@ -1,9 +1,14 @@
 import React from 'react';
 import './App.css';
+import Filters from './components/Filters';
+import Planets from './components/Planets';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <div>
+      <Filters />
+      <Planets />
+    </div>
   );
 }
 
