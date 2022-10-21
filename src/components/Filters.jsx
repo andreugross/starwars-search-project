@@ -11,7 +11,9 @@ function Filters() {
     handleComparison,
     value,
     handleValue,
+    callbackBtnFilter,
   } = useContext(MyContext);
+
   return (
     <form>
       <label htmlFor="planet-filter">
@@ -68,7 +70,11 @@ function Filters() {
         />
       </label>
 
-      <button data-testid="button-filter" type="button">
+      <button
+        data-testid="button-filter"
+        type="button"
+        onClick={ callbackBtnFilter }
+      >
         Filtrar
       </button>
     </form>

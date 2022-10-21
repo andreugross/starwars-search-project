@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import MyContext from './myContext';
 
 function Provider({ children }) {
@@ -27,6 +27,25 @@ function Provider({ children }) {
     setValue(target.value);
   };
 
+  const handleBtnFilter = () => {
+    const filterPlanets = planets.filter((e) => {
+      switch (comparison) {
+      case 'maior que':
+        return Number(e[column]) > Number(value);
+      case 'menor que':
+        return Number(e[column]) < Number(value);
+      default:
+        return Number(e[column]) === Number(value);
+      }
+    });
+    setPlanets(filterPlanets);
+  };
+
+  const callbackBtnFilter = useCallback(
+    handleBtnFilter,
+    [planets, comparison, column, value],
+  );
+
   useEffect(() => {
     const requestAPI = async () => {
       const response = await fetch('https://swapi.dev/api/planets');
@@ -44,17 +63,18 @@ function Provider({ children }) {
     () => ({
       planets,
       name,
-      handleName,
       column,
-      handleColumn,
       comparison,
-      handleComparison,
       value,
+      handleName,
+      handleColumn,
+      handleComparison,
       handleValue,
+      callbackBtnFilter,
     }),
-    [planets, name, column, comparison, value],
+    [planets, name, column, comparison, value, callbackBtnFilter],
   ); // é daqui que vai sair o negócio
-  console.log('log do context atual', context);
+  // console.log('log do context atual', context);
 
   return (
     <MyContext.Provider value={ context }>
