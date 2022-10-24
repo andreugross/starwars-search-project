@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import MyContext from '../context/myContext';
 
 function Filters() {
@@ -12,7 +12,25 @@ function Filters() {
     value,
     handleValue,
     callbackBtnFilter,
+    setColumn,
   } = useContext(MyContext);
+
+  const columnOptions = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
+
+  const [option, setOption] = useState(columnOptions);
+
+  function deleteOptionFilter() {
+    const newOptions = option.filter((e) => e !== column);
+    setOption(newOptions);
+    setColumn(newOptions[0]);
+    // console.log(newOptions);
+  }
 
   return (
     <form>
@@ -35,11 +53,7 @@ function Filters() {
           value={ column }
           onChange={ handleColumn }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {option.map((e) => <option key={ e } value={ e }>{e}</option>)}
         </select>
       </label>
 
@@ -73,7 +87,10 @@ function Filters() {
       <button
         data-testid="button-filter"
         type="button"
-        onClick={ callbackBtnFilter }
+        onClick={ () => {
+          callbackBtnFilter();
+          deleteOptionFilter();
+        } }
       >
         Filtrar
       </button>

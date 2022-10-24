@@ -71,6 +71,7 @@ function Provider({ children }) {
       handleComparison,
       handleValue,
       callbackBtnFilter,
+      setColumn,
     }),
     [planets, name, column, comparison, value, callbackBtnFilter],
   ); // é daqui que vai sair o negócio
