@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import MyContext from '../context/myContext';
 
 function Filters() {
@@ -13,9 +13,16 @@ function Filters() {
     handleValue,
     callbackBtnFilter,
     setColumn,
+    option,
+    setOption,
+    handleSortSelect,
+    handleSortRadio,
+    handleClickSort,
+    sortSelect,
+    sortRadio,
   } = useContext(MyContext);
 
-  const columnOptions = [
+  const sortOptions = [
     'population',
     'orbital_period',
     'diameter',
@@ -23,7 +30,13 @@ function Filters() {
     'surface_water',
   ];
 
-  const [option, setOption] = useState(columnOptions);
+  function mapSortOptions() {
+    return sortOptions.map((e) => (
+      <option key={ e } value={ e }>
+        {e}
+      </option>
+    ));
+  }
 
   function deleteOptionFilter() {
     const newOptions = option.filter((e) => e !== column);
@@ -49,11 +62,14 @@ function Filters() {
         <select
           data-testid="column-filter"
           id="column-filter"
-          name="column"
-          value={ column }
+          name="column-filter"
           onChange={ handleColumn }
         >
-          {option.map((e) => <option key={ e } value={ e }>{e}</option>)}
+          {option.map((e) => (
+            <option key={ e } value={ e }>
+              {e}
+            </option>
+          ))}
         </select>
       </label>
 
@@ -94,6 +110,51 @@ function Filters() {
       >
         Filtrar
       </button>
+
+      <label htmlFor="column-sort">
+        Ordenar
+        <select
+          data-testid="column-sort"
+          id="column-sort"
+          name="column=sort"
+          onChange={ handleSortSelect }
+        >
+          {mapSortOptions()}
+        </select>
+      </label>
+
+      <label htmlFor="column-sort-input-asc">
+        <input
+          type="radio"
+          data-testid="column-sort-input-asc"
+          id="column-sort-input-asc"
+          name="sort"
+          value="ASC"
+          onChange={ handleSortRadio }
+        />
+        ASC
+      </label>
+
+      <label htmlFor="column-sort-input-desc">
+        <input
+          type="radio"
+          data-testid="column-sort-input-desc"
+          id="column-sort-input-desc"
+          name="sort"
+          value="DESC"
+          onChange={ handleSortRadio }
+        />
+        DESC
+      </label>
+
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ () => handleClickSort(sortSelect, sortRadio) }
+      >
+        ORDENAR
+      </button>
+
     </form>
   );
 }
